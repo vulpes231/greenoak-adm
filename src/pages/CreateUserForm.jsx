@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../components/Input";
 import { options } from "../constants";
+
+import { createUser, reset } from "../features/createUserSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const initialState = {
   username: "",
@@ -15,7 +18,12 @@ const initialState = {
 };
 
 const CreateUserForm = () => {
+  const dispatch = useDispatch();
   const [form, SetForm] = useState(initialState);
+
+  const { addLoading, addError, addSuccess } = useSelector(
+    (state) => state.adduser
+  );
 
   const myoptions = options.map((opt) => {
     return (
@@ -24,6 +32,10 @@ const CreateUserForm = () => {
       </option>
     );
   });
+
+  const resetInput = () => {
+    SetForm(initialState);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,12 +48,26 @@ const CreateUserForm = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log(form);
+    dispatch(createUser(form));
   };
+
+  useEffect(() => {
+    if (addSuccess) {
+      resetInput();
+      setTimeout(() => {
+        dispatch(reset());
+      }, 2000);
+    }
+  }, [dispatch, addSuccess]);
 
   return (
     <section className="p-6 flex flex-col gap-6">
       <h3 className="text-xl">Create User</h3>
-      <form action="" className="space-y-6" onSubmit={handleFormSubmit}>
+      <form
+        action=""
+        className="space-y-6 font-extralight"
+        onSubmit={handleFormSubmit}
+      >
         <label htmlFor="">
           Username
           <Input
@@ -137,7 +163,10 @@ const CreateUserForm = () => {
             name="dob"
           />
         </label>
-        <button className="bg-green-500 p-2">Create user</button>
+        {addError && <p className="text-red-500">{addError}</p>}
+        <button className="bg-green-700 px-2 py-3 w-full md:w-[250px] md:mx-auto text-white rounded-xl font-bold">
+          {addLoading ? "Creating User..." : "Create User"}
+        </button>
       </form>
     </section>
   );
