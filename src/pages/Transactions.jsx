@@ -9,7 +9,7 @@ const Transactions = () => {
         <img src={construction} alt="" className="w-full md:w-[300px]" />
       </figure>
       <p className="font-extralight text-center text-green-700">
-        Page is currently under construction, check back later.
+        Page is currently under construction, check back later. 🏗️🚧
       </p>
     </section>
   );
