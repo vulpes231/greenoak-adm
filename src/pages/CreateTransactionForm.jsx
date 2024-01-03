@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reset, createTrx } from "../features/createTransSlice";
 
 const initialState = {
+  initiator: "",
   sender: "",
   receiver: "",
   amount: "",
@@ -56,6 +57,15 @@ const CreateTransactionForm = () => {
         className="space-y-6 font-extralight"
         onSubmit={handleSubmit}
       >
+        <label htmlFor="">
+          Initiator
+          <Input
+            placeHolder="Initiator"
+            value={form.initiator}
+            handleOnChange={handleInputChange}
+            name="initiator"
+          />
+        </label>
         <label htmlFor="">
           Sender
           <Input

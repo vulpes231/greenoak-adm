@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// const devurl = "http://localhost:3500";
+const liveurl = "https://greenoak.onrender.com";
+
 const initialState = {
   trxLoading: false,
   trxError: false,
@@ -10,7 +13,7 @@ const initialState = {
 export const createTrx = createAsyncThunk(
   "createtrx/createTrx",
   async (form) => {
-    const url = ``;
+    const url = `${liveurl}/transaction`;
     try {
       const response = await axios.post(url, form, {
         headers: {
