@@ -6,13 +6,15 @@ import CreateUserForm from "./pages/CreateUserForm";
 import CreateTransactionForm from "./pages/createTransactionForm";
 import Users from "./pages/Users";
 import Transactions from "./pages/Transactions";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
     <div>
       <NavBar />
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/dash" element={<Landing />} />
         <Route path="/create-user" element={<CreateUserForm />} />
         <Route path="/create-transaction" element={<CreateTransactionForm />} />
         <Route path="/get-users" element={<Users />} />
