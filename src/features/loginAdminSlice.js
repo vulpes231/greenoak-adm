@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const devurl = "http://localhost:5000";
+const liveurl = "https://greenoak.onrender.com";
+
 const initialState = {
   loginError: false,
   loginLoading: false,
@@ -10,7 +13,7 @@ const initialState = {
 export const adminSignin = createAsyncThunk(
   "loginadmin/adminSignin",
   async (form) => {
-    const url = ``;
+    const url = `${liveurl}/signin`;
 
     try {
       const response = await axios.post(url, form, {
@@ -49,7 +52,7 @@ const loginAdmin = createSlice({
       .addCase(adminSignin.fulfilled, (state, action) => {
         state.loginLoading = false;
         state.loginError = false;
-        state.accessToken = action.payload;
+        state.accessToken = action.payload.accessToken;
       })
       .addCase(adminSignin.rejected, (state, action) => {
         state.loginLoading = false;

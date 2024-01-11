@@ -12,12 +12,14 @@ const initialState = {
 
 export const createTrx = createAsyncThunk(
   "createtrx/createTrx",
-  async (form) => {
+  async (form, { getState }) => {
     const url = `${liveurl}/transaction`;
+    const { accessToken } = getState().loginadmin;
     try {
       const response = await axios.post(url, form, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       return response.data;
