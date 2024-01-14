@@ -3,20 +3,24 @@ import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
 
 import { reset, createTrx } from "../features/createTransSlice";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   initiator: "",
   sender: "",
-  receiver: "",
+  account: "",
   amount: "",
-  desc: "",
+  description: "",
   date: "",
-  trx_type: "",
+  type: "",
 };
 
 const CreateTransactionForm = () => {
   const dispatch = useDispatch();
   const [form, SetForm] = useState(initialState);
+
+  const navigate = useNavigate();
+  const { accessToken } = useSelector((state) => state.loginadmin);
 
   const { trxLoading, trxError, trxSuccess } = useSelector(
     (state) => state.createtrx
@@ -24,6 +28,7 @@ const CreateTransactionForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // console.log(`Setting ${name} to ${value}`);
     SetForm((prev) => ({
       ...prev,
       [name]: value,
@@ -36,7 +41,7 @@ const CreateTransactionForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    // console.log(form);
     dispatch(createTrx(form));
   };
 
@@ -48,6 +53,12 @@ const CreateTransactionForm = () => {
       }, 2000);
     }
   }, [dispatch, trxSuccess]);
+
+  useEffect(() => {
+    if (!accessToken) {
+      navigate("/");
+    }
+  });
 
   return (
     <section className="p-6 flex flex-col gap-6">
@@ -76,12 +87,12 @@ const CreateTransactionForm = () => {
           />
         </label>
         <label htmlFor="">
-          Receiver Account
+          Account
           <Input
             placeHolder="Account No"
-            value={form.receiver}
+            value={form.account}
             handleOnChange={handleInputChange}
-            name="receiver"
+            name="account"
           />
         </label>
         <label htmlFor="">
@@ -96,20 +107,21 @@ const CreateTransactionForm = () => {
         <label htmlFor="">
           Memo
           <Input
-            placeHolder="Memo or Description"
-            value={form.desc}
+            placeHolder="Memo or descriptionription"
+            value={form.description}
             handleOnChange={handleInputChange}
-            name="desc"
+            name="description"
           />
         </label>
         <label htmlFor="">
           Transaction Type
           <select
-            name="trx_type"
-            value={form.trx_type}
+            name="type"
+            value={form.type}
             onChange={handleInputChange}
             className="border-2 w-full py-2 px-2 md:py-3 outline-green-400 text-lg md:text-xl"
           >
+            <option value="">Select Type</option>
             <option value="credit">Credit</option>
             <option value="debit">Debit</option>
           </select>
@@ -124,6 +136,9 @@ const CreateTransactionForm = () => {
           />
         </label>
         {trxError && <p className="text-red-500">{trxError}</p>}
+        {trxSuccess && (
+          <p className="text-green-500">Transaction created successfully.</p>
+        )}
         <button className="bg-green-700 px-2 py-3 w-full md:w-[250px] md:mx-auto text-white rounded-xl font-bold">
           {trxLoading ? "Creating Transaction..." : "Create Transaction"}
         </button>

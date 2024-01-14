@@ -15,6 +15,7 @@ export const createTrx = createAsyncThunk(
   async (form, { getState }) => {
     const url = `${liveurl}/transaction`;
     const { accessToken } = getState().loginadmin;
+    // console.log(form);
     try {
       const response = await axios.post(url, form, {
         headers: {
