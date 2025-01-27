@@ -27,7 +27,7 @@ export const adminSignin = createAsyncThunk(
   }
 );
 
-const loginAdmin = createSlice({
+const loginSlice = createSlice({
   name: "signin",
   initialState,
   reducers: {
@@ -55,5 +55,5 @@ const loginAdmin = createSlice({
   },
 });
 
-export const { resetLogin } = loginAdmin.actions;
-export default loginAdmin.reducer;
+export const { resetLogin } = loginSlice.actions;
+export default loginSlice.reducer;

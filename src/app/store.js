@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import createUserReducer from "../features/createUserSlice";
-import createTransReducer from "../features/createTransSlice";
-import loginAdminReducer from "../features/loginAdminSlice";
+import loginReducer from "../features/loginSlice";
+import userReducer from "../features/userSlice";
+import trnxSlice from "../features/trnxSlice";
 
 const store = configureStore({
   reducer: {
-    adduser: createUserReducer,
-    createtrx: createTransReducer,
-    signin: loginAdminReducer,
+    user: userReducer,
+    trnx: trnxSlice,
+    signin: loginReducer,
   },
 });
 
