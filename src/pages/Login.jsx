@@ -1,9 +1,15 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Input from "../components/Input";
-import Button from "../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { adminSignin, reset } from "../features/loginAdminSlice";
+import { useNavigate } from "react-router-dom";
+import { adminSignin, resetLogin } from "../features/loginAdminSlice";
+
+import {} from "react-icons/fa";
+import { MdAdminPanelSettings } from "react-icons/md";
+import Errormodal from "../components/Errormodal";
+import Loadingmodal from "../components/Loadingmodal";
+import Successmodal from "../components/Successmodal";
 
 const initialState = {
   username: "",
@@ -14,10 +20,10 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form, SetForm] = useState(initialState);
-  // const [submitted, SetSubmitted] = useState(false);
+  const [error, SetError] = useState("");
 
   const { loginError, loginLoading, accessToken } = useSelector(
-    (state) => state.loginadmin
+    (state) => state.signin
   );
 
   const handleInputChange = (e) => {
@@ -30,7 +36,11 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    for (const key in form) {
+      if (form[key] === "") {
+        return SetError(`${key} is required`);
+      }
+    }
     dispatch(adminSignin(form));
   };
 
@@ -39,73 +49,71 @@ const Login = () => {
   };
 
   useEffect(() => {
-    let timeout;
-
     if (loginError) {
-      timeout = setTimeout(() => {
-        dispatch(reset());
-      }, 2000);
+      SetError(loginError);
     }
-
-    return () => clearTimeout(timeout);
   }, [loginError]);
 
   useEffect(() => {
     let timeout;
 
-    if (accessToken) {
-      console.log(accessToken);
-      resetInput();
+    if (error) {
       timeout = setTimeout(() => {
-        // dispatch(reset())
-        navigate("/dash");
-      }, 2000);
+        SetError("");
+      }, 3000);
     }
 
     return () => clearTimeout(timeout);
-  }, [accessToken]);
+  }, [error, dispatch]);
+
+  useEffect(() => {
+    let timeout;
+
+    if (accessToken) {
+      timeout = setTimeout(() => {
+        sessionStorage.setItem("accessToken", accessToken);
+        resetInput();
+        window.location.href = "/dash";
+      }, 3000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [accessToken, navigate]);
 
   return (
-    <section className="p-6 flex flex-col gap-6">
-      <h3 className="font-bold text-lg text-center capitalize">
-        Login as Admin
-      </h3>
+    <section className="p-4 flex flex-col gap-6 bg-slate-200 h-screen items-center justify-center">
       <form
         action=""
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 md:max-w-[500px] md:mx-auto w-full"
+        className="flex flex-col gap-6 sm:w-[380px] md:mx-auto w-full bg-white shadow p-8 rounded-sm"
       >
-        <label htmlFor="" className="flex flex-col gap-1">
-          Username
-          <Input
-            value={form.username}
-            name={"username"}
-            handleOnChange={handleInputChange}
-            placeHolder={"Enter Admin Username"}
-            type={"text"}
-          />
-        </label>
-        <label htmlFor="" className="flex flex-col gap-1">
-          Password
-          <Input
-            value={form.password}
-            name={"password"}
-            handleOnChange={handleInputChange}
-            placeHolder={"Enter Admin Password"}
-            type={"password"}
-          />
-        </label>
-        {loginError && <p className="text-red-500">{loginError}</p>}
-        <button className="bg-green-700 p-3 text-white font-light md:font-semibold tracking-wider rounded-lg w-full text-center">
-          {loginLoading ? "Logging in..." : "Login"}
+        <h3 className="font-bold text-3xl flex items-center">
+          <MdAdminPanelSettings size={40} /> Login as Admin
+        </h3>
+
+        <Input
+          value={form.username}
+          name={"username"}
+          handleOnChange={handleInputChange}
+          placeHolder={"Enter Username"}
+          type={"text"}
+        />
+
+        <Input
+          value={form.password}
+          name={"password"}
+          handleOnChange={handleInputChange}
+          placeHolder={"Enter Password"}
+          type={"password"}
+        />
+
+        {error && <Errormodal text={error} />}
+        <button className="bg-green-600 py-2.5 text-white font-semibold  tracking-wider rounded-3xl w-full text-center">
+          {"Sign in"}
         </button>
-        <p className="font-extralight text-sm">
-          Don't have and admin account?{" "}
-          <Link to={"/new-admin"} className="text-green-700 underline">
-            Create Now
-          </Link>
-        </p>
       </form>
+      {loginLoading && <Loadingmodal text={"Signing in..."} />}
+      {accessToken && <Successmodal text={"Signin Success."} />}
     </section>
   );
 };

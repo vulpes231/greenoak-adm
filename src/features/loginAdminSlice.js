@@ -1,8 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const devurl = "http://localhost:5000";
-const liveurl = "https://greenoak.onrender.com";
+import { devurl, liveurl, sendError } from "../constants";
 
 const initialState = {
   loginError: false,
@@ -12,33 +11,27 @@ const initialState = {
 
 export const adminSignin = createAsyncThunk(
   "loginadmin/adminSignin",
-  async (form) => {
-    const url = `${liveurl}/signin`;
+  async (formData) => {
+    const url = `${devurl}/signin/admin`;
 
     try {
-      const response = await axios.post(url, form, {
+      const response = await axios.post(url, formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
       });
       return response.data;
     } catch (error) {
-      if (error.response) {
-        const errorMessage = error.response.data.message;
-        throw new Error(errorMessage);
-      } else {
-        throw error;
-      }
+      sendError(error);
     }
   }
 );
 
 const loginAdmin = createSlice({
-  name: "loginadmin",
+  name: "signin",
   initialState,
   reducers: {
-    reset(state) {
+    resetLogin(state) {
       state.loginError = false;
       state.loginLoading = false;
       state.accessToken = null;
@@ -62,5 +55,5 @@ const loginAdmin = createSlice({
   },
 });
 
-export const { reset } = loginAdmin.actions;
+export const { resetLogin } = loginAdmin.actions;
 export default loginAdmin.reducer;

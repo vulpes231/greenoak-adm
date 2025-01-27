@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
@@ -12,7 +13,7 @@ import EnrollAdmin from "./pages/EnrollAdmin";
 const App = () => {
   return (
     <div>
-      <NavBar />
+      {/* <NavBar /> */}
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/dash" element={<Landing />} />

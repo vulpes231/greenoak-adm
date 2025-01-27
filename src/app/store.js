@@ -7,7 +7,7 @@ const store = configureStore({
   reducer: {
     adduser: createUserReducer,
     createtrx: createTransReducer,
-    loginadmin: loginAdminReducer,
+    signin: loginAdminReducer,
   },
 });
 
