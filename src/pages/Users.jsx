@@ -13,8 +13,6 @@ const Users = ({ setActive }) => {
     (state) => state.user
   );
 
-  console.log(user);
-
   useEffect(() => {
     if (accessToken) {
       dispatch(getAllUsers());
@@ -25,6 +23,10 @@ const Users = ({ setActive }) => {
     setActive("users");
     document.title = "RegentOak - Users";
   }, []);
+
+  if (getUserLoading) {
+    return <div>Fethicng users...</div>;
+  }
   return (
     <section className=" bg-slate-200 text-slate-900 h-screen w-full">
       <div className="p-10 flex flex-col gap-10">
@@ -44,6 +46,25 @@ const Users = ({ setActive }) => {
               <th className={customStyles.td}>action</th>
             </tr>
           </thead>
+          <tbody>
+            {user &&
+              user.map((us) => {
+                return (
+                  <tr key={us._id}>
+                    <td className={customStyles.th}>{us.username}</td>
+                    <td className={customStyles.th}>{us.email}</td>
+                    <td className={customStyles.th}>{us.phone}</td>
+                    <td className={customStyles.th}>{us.gender}</td>
+                    <td className={customStyles.th}>
+                      <span className="flex items-center">
+                        <option value="edit">edit</option>
+                        <option value="edit">delete</option>
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
         </table>
       </div>
     </section>

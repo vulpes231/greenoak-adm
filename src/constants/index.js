@@ -36,7 +36,7 @@ const authLinks = [
 const customStyles = {
   title: "text-2xl font-bold",
   td: "px-6 py-2.5 capitalize font-bold text-sm",
-  th: "px-6 py-2.5 capitalize",
+  th: "px-6 py-2.5 capitalize text-sm",
 };
 
 export {
