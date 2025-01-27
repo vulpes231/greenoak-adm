@@ -1,9 +1,26 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
-import { customStyles } from "../constants";
+import { customStyles, getAccessToken } from "../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllTrnxs } from "../features/trnxSlice";
 
 const Transactions = ({ setActive }) => {
+  const dispatch = useDispatch();
+  const accessToken = getAccessToken();
+
+  const { trnxs, getTrnxError, getTrnxLoading } = useSelector(
+    (state) => state.trnx
+  );
+
+  console.log(trnxs);
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getAllTrnxs());
+    }
+  }, [accessToken, dispatch]);
+
   useEffect(() => {
     setActive("transactions");
     document.title = "RegentOak - Transactions";

@@ -6,12 +6,15 @@ const initialState = {
   createTrxLoading: false,
   createTrxError: false,
   createTrxSuccess: false,
+  getTrxLoading: false,
+  getTrxError: false,
+  trnxs: false,
 };
 
 export const createTrxn = createAsyncThunk(
   "trnx/createTrxn",
   async (formData) => {
-    const url = `${devurl}/transaction`;
+    const url = `${devurl}/transaction/admin`;
     const accessToken = getAccessToken();
 
     try {
@@ -28,11 +31,28 @@ export const createTrxn = createAsyncThunk(
   }
 );
 
+export const getAllTrnxs = createAsyncThunk("trnx/getAllTrnxs", async () => {
+  const url = `${devurl}/transaction/admin`;
+  const accessToken = getAccessToken();
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    sendError(error);
+  }
+});
+
 const trnxSlice = createSlice({
   name: "trnx",
   initialState,
   reducers: {
-    reset(state) {
+    resetCreateTrnx(state) {
       state.trxError = false;
       state.trxLoading = false;
       state.trxSuccess = false;
@@ -43,9 +63,9 @@ const trnxSlice = createSlice({
       .addCase(createTrxn.pending, (state) => {
         state.createTrxLoading = true;
       })
-      .addCase(createTrxn.fulfilled, (state, action) => {
+      .addCase(createTrxn.fulfilled, (state) => {
         state.createTrxLoading = false;
-        state.createTrxSuccess = action.payload.trnxs;
+        state.createTrxSuccess = true;
         state.createTrxError = false;
       })
       .addCase(createTrxn.rejected, (state, action) => {
@@ -53,8 +73,22 @@ const trnxSlice = createSlice({
         state.createTrxSuccess = false;
         state.createTrxError = action.error.message;
       });
+    builder
+      .addCase(getAllTrnxs.pending, (state) => {
+        state.getTrxLoading = true;
+      })
+      .addCase(getAllTrnxs.fulfilled, (state, action) => {
+        state.getTrxLoading = false;
+        state.trnxs = action.payload.transactions;
+        state.getTrxError = false;
+      })
+      .addCase(getAllTrnxs.rejected, (state, action) => {
+        state.getTrxLoading = false;
+        state.trnxs = false;
+        state.getTrxError = action.error.message;
+      });
   },
 });
 
-export const { reset } = trnxSlice.actions;
+export const { resetCreateTrnx } = trnxSlice.actions;
 export default trnxSlice.reducer;

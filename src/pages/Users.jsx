@@ -1,9 +1,26 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
-import { customStyles } from "../constants";
+import { customStyles, getAccessToken } from "../constants";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllUsers } from "../features/userSlice";
 
 const Users = ({ setActive }) => {
+  const dispatch = useDispatch();
+  const accessToken = getAccessToken();
+
+  const { user, getUserError, getUserLoading } = useSelector(
+    (state) => state.user
+  );
+
+  console.log(user);
+
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getAllUsers());
+    }
+  }, [accessToken, dispatch]);
+
   useEffect(() => {
     setActive("users");
     document.title = "RegentOak - Users";

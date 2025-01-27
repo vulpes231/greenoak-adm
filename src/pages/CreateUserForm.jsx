@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Input from "../components/Input";
 import { options } from "../constants";
 
-import { createUser, reset } from "../features/createUserSlice";
+import { createUser, resetCreateUser } from "../features/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const initialState = {
@@ -21,8 +22,8 @@ const CreateUserForm = () => {
   const dispatch = useDispatch();
   const [form, SetForm] = useState(initialState);
 
-  const { addLoading, addError, addSuccess } = useSelector(
-    (state) => state.adduser
+  const { createUserLoading, createUserError, userCreated } = useSelector(
+    (state) => state.user
   );
 
   const myoptions = options.map((opt) => {
@@ -52,13 +53,13 @@ const CreateUserForm = () => {
   };
 
   useEffect(() => {
-    if (addSuccess) {
+    if (userCreated) {
       resetInput();
       setTimeout(() => {
-        dispatch(reset());
+        dispatch(resetCreateUser());
       }, 2000);
     }
-  }, [dispatch, addSuccess]);
+  }, [dispatch, userCreated]);
 
   return (
     <section className="p-6 flex flex-col gap-6">
@@ -163,9 +164,9 @@ const CreateUserForm = () => {
             name="dob"
           />
         </label>
-        {addError && <p className="text-red-500">{addError}</p>}
+        {createUserError && <p className="text-red-500">{createUserError}</p>}
         <button className="bg-green-700 px-2 py-3 w-full md:w-[250px] md:mx-auto text-white rounded-xl font-bold">
-          {addLoading ? "Creating User..." : "Create User"}
+          {createUserLoading ? "Creating User..." : "Create User"}
         </button>
       </form>
     </section>

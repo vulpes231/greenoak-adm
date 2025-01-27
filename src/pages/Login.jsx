@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { adminSignin, resetLogin } from "../features/loginAdminSlice";
+import { adminSignin, resetLogin } from "../features/loginSlice";
 
 import {} from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";

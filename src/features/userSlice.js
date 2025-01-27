@@ -31,7 +31,7 @@ export const createUser = createAsyncThunk(
 );
 
 export const getAllUsers = createAsyncThunk("user/getAllUsers", async () => {
-  const url = `${devurl}/user`;
+  const url = `${devurl}/user/all`;
   try {
     const accessToken = getAccessToken();
     const response = await axios.get(url, {

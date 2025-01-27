@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
 
-import { reset, createTrx } from "../features/createTransSlice";
 import { useNavigate } from "react-router-dom";
+import { createTrxn, resetCreateTrnx } from "../features/trnxSlice";
+import { getAccessToken } from "../constants";
 
 const initialState = {
   initiator: "",
@@ -20,10 +22,10 @@ const CreateTransactionForm = () => {
   const [form, SetForm] = useState(initialState);
 
   const navigate = useNavigate();
-  const { accessToken } = useSelector((state) => state.loginadmin);
+  const accessToken = getAccessToken();
 
-  const { trxLoading, trxError, trxSuccess } = useSelector(
-    (state) => state.createtrx
+  const { createTrnxLoading, createTrnxError, createTrnxSuccess } = useSelector(
+    (state) => state.trnx
   );
 
   const handleInputChange = (e) => {
@@ -42,23 +44,23 @@ const CreateTransactionForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log(form);
-    dispatch(createTrx(form));
+    dispatch(createTrxn(form));
   };
 
   useEffect(() => {
-    if (trxSuccess) {
+    if (createTrnxSuccess) {
       resetInput();
       setTimeout(() => {
-        dispatch(reset());
+        dispatch(resetCreateTrnx());
       }, 2000);
     }
-  }, [dispatch, trxSuccess]);
+  }, [dispatch, createTrnxSuccess]);
 
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
     }
-  });
+  }, [accessToken, navigate]);
 
   return (
     <section className="p-6 flex flex-col gap-6">
@@ -135,12 +137,12 @@ const CreateTransactionForm = () => {
             name="date"
           />
         </label>
-        {trxError && <p className="text-red-500">{trxError}</p>}
-        {trxSuccess && (
+        {createTrnxError && <p className="text-red-500">{createTrnxError}</p>}
+        {createTrnxSuccess && (
           <p className="text-green-500">Transaction created successfully.</p>
         )}
         <button className="bg-green-700 px-2 py-3 w-full md:w-[250px] md:mx-auto text-white rounded-xl font-bold">
-          {trxLoading ? "Creating Transaction..." : "Create Transaction"}
+          {createTrnxLoading ? "Creating Transaction..." : "Create Transaction"}
         </button>
       </form>
     </section>

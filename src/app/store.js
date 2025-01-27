@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import loginReducer from "../features/loginSlice";
 import userReducer from "../features/userSlice";
-import trnxSlice from "../features/trnxSlice";
+import trnxReducer from "../features/trnxSlice";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    trnx: trnxSlice,
+    trnx: trnxReducer,
     signin: loginReducer,
   },
 });
