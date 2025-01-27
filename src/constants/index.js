@@ -17,5 +17,34 @@ const sendError = (error) => {
   }
 };
 
-export { options, devurl, liveurl, sendError };
-// Compare this snippet from src/features/createUserSlice.js:
+const getAccessToken = () => {
+  const accessToken = sessionStorage.getItem("accessToken");
+  if (accessToken) {
+    return accessToken;
+  } else {
+    return null;
+  }
+};
+
+const authLinks = [
+  { id: 1, title: "Dashboard", path: "/dash" },
+  { id: 2, title: "Users", path: "/user" },
+  { id: 3, title: "Transactions", path: "/transaction" },
+  { id: 4, title: "Sendmail", path: "/mail" },
+];
+
+const customStyles = {
+  title: "text-2xl font-bold",
+  td: "px-6 py-2.5 capitalize font-bold text-sm",
+  th: "px-6 py-2.5 capitalize",
+};
+
+export {
+  options,
+  devurl,
+  liveurl,
+  sendError,
+  getAccessToken,
+  authLinks,
+  customStyles,
+};
