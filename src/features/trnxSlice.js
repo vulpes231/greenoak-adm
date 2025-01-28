@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { devurl, getAccessToken, sendError } from "../constants";
+import { liveurl, devurl, getAccessToken, sendError } from "../constants";
 
 const initialState = {
   createTrxLoading: false,
@@ -14,7 +14,7 @@ const initialState = {
 export const createTrxn = createAsyncThunk(
   "trnx/createTrxn",
   async (formData) => {
-    const url = `${devurl}/transaction/admin`;
+    const url = `${liveurl}/transaction/admin`;
     const accessToken = getAccessToken();
 
     try {
@@ -32,7 +32,7 @@ export const createTrxn = createAsyncThunk(
 );
 
 export const getAllTrnxs = createAsyncThunk("trnx/getAllTrnxs", async () => {
-  const url = `${devurl}/transaction/admin`;
+  const url = `${liveurl}/transaction/admin`;
   const accessToken = getAccessToken();
 
   try {

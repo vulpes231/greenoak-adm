@@ -12,7 +12,7 @@ const initialState = {
 export const adminSignin = createAsyncThunk(
   "loginadmin/adminSignin",
   async (formData) => {
-    const url = `${devurl}/signin/admin`;
+    const url = `${liveurl}/signin/admin`;
 
     try {
       const response = await axios.post(url, formData, {

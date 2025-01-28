@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import EnrollAdmin from "./pages/EnrollAdmin";
 import Sidebar from "./components/Sidebar";
 import { getAccessToken } from "./constants";
+import Updateuser from "./pages/Updateuser";
 
 const App = () => {
   const [active, setActive] = useState("dashboard");
@@ -23,8 +24,9 @@ const App = () => {
           <Route path="/" element={<Login />} />
           <Route path="/dash" element={<Landing />} />
           <Route path="/new-admin" element={<EnrollAdmin />} />
-          {/* <Route path="/create-user" element={<CreateUserForm />} />
-        <Route path="/create-transaction" element={<CreateTransactionForm />} /> */}
+          <Route path="/update/:userId" element={<Updateuser />} />
+          <Route path="/create-user" element={<CreateUserForm />} />
+
           <Route path="/user" element={<Users setActive={setActive} />} />
           <Route
             path="/transaction"

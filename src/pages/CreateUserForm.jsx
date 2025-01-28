@@ -5,6 +5,10 @@ import { options } from "../constants";
 
 import { createUser, resetCreateUser } from "../features/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Loadingmodal from "../components/Loadingmodal";
+import Errormodal from "../components/Errormodal";
+import Successmodal from "../components/Successmodal";
 
 const initialState = {
   username: "",
@@ -20,6 +24,7 @@ const initialState = {
 
 const CreateUserForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [form, SetForm] = useState(initialState);
 
   const { createUserLoading, createUserError, userCreated } = useSelector(
@@ -53,20 +58,27 @@ const CreateUserForm = () => {
   };
 
   useEffect(() => {
+    let timeout;
     if (userCreated) {
-      resetInput();
-      setTimeout(() => {
+      timeout = setTimeout(() => {
+        resetInput();
         dispatch(resetCreateUser());
-      }, 2000);
+        navigate("/user");
+      }, 3000);
     }
-  }, [dispatch, userCreated]);
+    return () => clearTimeout(timeout);
+  }, [dispatch, userCreated, navigate]);
+
+  useEffect(() => {
+    document.title = "RegentOak - Admin Create User";
+  }, []);
 
   return (
-    <section className="p-6 flex flex-col gap-6">
+    <section className="p-6 flex flex-col gap-6 h-screen overflow-auto">
       <h3 className="text-xl">Create User</h3>
       <form
         action=""
-        className="space-y-6 font-extralight"
+        className="space-y-6 font-light w-[390px] mx-auto"
         onSubmit={handleFormSubmit}
       >
         <label htmlFor="">
@@ -164,11 +176,14 @@ const CreateUserForm = () => {
             name="dob"
           />
         </label>
-        {createUserError && <p className="text-red-500">{createUserError}</p>}
+
         <button className="bg-green-700 px-2 py-3 w-full md:w-[250px] md:mx-auto text-white rounded-xl font-bold">
-          {createUserLoading ? "Creating User..." : "Create User"}
+          {"Create User"}
         </button>
       </form>
+      {createUserLoading && <Loadingmodal text={"Creating user..."} />}
+      {createUserError && <Errormodal text={createUserError} />}
+      {userCreated && <Successmodal text={"User created."} />}
     </section>
   );
 };
