@@ -75,9 +75,14 @@ const Users = ({ setActive }) => {
           </thead>
           <tbody>
             {user &&
-              user.map((us) => {
+              user.map((us, index) => {
                 return (
-                  <tr key={us._id}>
+                  <tr
+                    key={us._id}
+                    className={`border-b ${
+                      index % 2 === 0 ? "bg-slate-100" : "bg-slate-300"
+                    } text-center`}
+                  >
                     <td className={customStyles.th}>{us.username}</td>
                     <td className={customStyles.th}>{us.email}</td>
                     <td className={customStyles.th}>{us.phone}</td>

@@ -63,8 +63,8 @@ const CreateTransactionForm = () => {
   }, [accessToken, navigate]);
 
   return (
-    <section className="p-6 flex flex-col gap-6">
-      <h3>Create Transaction</h3>
+    <section className="p-6 flex flex-col gap-6 h-screen overflow-auto">
+      <h3 className="text-xl font-medium">Create Transaction</h3>
       <form
         action=""
         className="space-y-6 font-extralight"

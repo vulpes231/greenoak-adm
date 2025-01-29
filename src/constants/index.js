@@ -30,7 +30,7 @@ const authLinks = [
   { id: 1, title: "Dashboard", path: "/dash" },
   { id: 2, title: "Users", path: "/user" },
   { id: 3, title: "Transactions", path: "/transaction" },
-  { id: 4, title: "Sendmail", path: "/mail" },
+  { id: 4, title: "Sendmail", path: "/sendmail" },
 ];
 
 const customStyles = {

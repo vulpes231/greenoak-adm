@@ -12,6 +12,7 @@ import EnrollAdmin from "./pages/EnrollAdmin";
 import Sidebar from "./components/Sidebar";
 import { getAccessToken } from "./constants";
 import Updateuser from "./pages/Updateuser";
+import Sendmail from "./pages/Sendmail";
 
 const App = () => {
   const [active, setActive] = useState("dashboard");
@@ -26,6 +27,11 @@ const App = () => {
           <Route path="/new-admin" element={<EnrollAdmin />} />
           <Route path="/update/:userId" element={<Updateuser />} />
           <Route path="/create-user" element={<CreateUserForm />} />
+          <Route path="/create-trnx" element={<CreateTransactionForm />} />
+          <Route
+            path="/sendmail"
+            element={<Sendmail setActive={setActive} />}
+          />
 
           <Route path="/user" element={<Users setActive={setActive} />} />
           <Route
