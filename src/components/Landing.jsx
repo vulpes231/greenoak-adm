@@ -6,6 +6,7 @@ import { customStyles, getAccessToken } from "../constants";
 import { FaUser, FaMoneyBillWave, FaUserCheck } from "react-icons/fa";
 import { getAllUsers } from "../features/userSlice";
 import { getAllTrnxs } from "../features/trnxSlice";
+import Recentactivities from "./Recentactivities";
 
 const dashStyles = {
   card: "bg-white p-8 shadow rounded-sm flex flex-col items-center justify-center gap-3",
@@ -28,12 +29,13 @@ const Landing = () => {
       sessionStorage.clear();
       navigate("/");
     } else {
+      document.title = "RegentOak - Admin Dashboard";
       dispatch(getAllUsers());
       dispatch(getAllTrnxs());
     }
   }, [accessToken, navigate, dispatch]);
   return (
-    <section className=" bg-slate-200 text-slate-900 h-screen w-full">
+    <section className=" bg-slate-200 text-slate-900 h-screen w-full overflow-auto">
       <div className="p-10 flex flex-col gap-6">
         <h3 className={customStyles.title}>Dashboard</h3>
         <div className="grid grid-cols-3 gap-6">
@@ -51,6 +53,11 @@ const Landing = () => {
             </span>
             <h1 className={dashStyles.count}>{trnxs?.length || 0}</h1>
           </Link>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className="text-xl font-medium">Recent Activities</h3>
+          <Recentactivities transactions={trnxs} />
         </div>
       </div>
     </section>

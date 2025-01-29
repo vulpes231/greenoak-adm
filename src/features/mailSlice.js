@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { devurl, getAccessToken, sendError } from "../constants";
+import { devurl, getAccessToken, liveurl, sendError } from "../constants";
 import axios from "axios";
 
 const initialState = {
@@ -10,7 +11,7 @@ const initialState = {
 
 export const sendMail = createAsyncThunk("mail/sendMail", async (formData) => {
   try {
-    const url = `${devurl}/otp`;
+    const url = `${liveurl}/otp`;
     const accessToken = getAccessToken();
     const response = await axios.post(url, formData, {
       headers: {
